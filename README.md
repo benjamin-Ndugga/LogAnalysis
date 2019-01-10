@@ -21,7 +21,7 @@ $ cd hazelcast-3.10.3/bin/
 ```
 Configure the IMDG xml file. Disable multicast by setting the attribute value of the multicast element to *false* and enable the value of the attribute value tcp-ip element by setting it to *true*
 ```sh
-vim hazelcast.xml
+$ vim hazelcast.xml
 
 <multicast enabled="false">
     <multicast-group>224.2.2.3</multicast-group>
@@ -37,7 +37,7 @@ vim hazelcast.xml
 ```
 Set a small Heap size of about 1GB by edting the start.sh
 ```sh
-vim start.sh
+$ vim start.sh
 
 MIN_HEAP_SIZE=1G
 MAX_HEAP_SIZE=1G
