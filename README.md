@@ -1,9 +1,24 @@
 # LogAnalysis
 
-[Real-Time HTTP Traffic Analysis ](./src/com/ben/mscit) - A demonstration on how streamed data continuously computes trends as it happens. Looking at events in last 5 Minutes and sliding by 10 secs,
+[Real-Time HTTP Traffic Analysis ](./src/com/ben/mscit) - A demostration on how streamed data continuously computes trends as it happens. Looking at events in last 5 Minutes and sliding by 10 secs,
 computes the total number of requests per module, response code count, average response times , upstream server hit count. This then saves the results to an IMDG. There are lines of code that specify where the results can be wrtiten  with a terminal function `drainTo`. You can change this to see the results by tailing the output file.
 
 Each module has been deployed on clusters 1 and 2, the application records the number of each cluster is taking in the given time window.
+
+## Sample HTTP Request Data
+SOURCE_IP|DATE|REQUEST_TYPE|URL|HTTP_CLIENT_TYPE|RESPOSNE_CODE|CONTENT_LENGHT|CLIENT_TYPE|PROCESSING_NODE|REQUEST_TIME_TAKEN|UPSTREAM_CONN_TIME|UPSTREAM_RESP_TIME|MODULE|FILE_NAME
+------|------|------|------|------|------|------|------|------|------|------|------|------|------
+192.168.1.1|30/Nov/2018:03:35:54|GET|/client|HTTP/1.1|200|33|"Java/1.6.0_45"|192.168.2.5:28080|0.229|0|0.229|module4|access.log-20181201.gz
+192.168.1.1|30/Nov/2018:03:35:55|GET|/client|HTTP/1.1|200|64|"Java/1.6.0_45"|192.168.2.4:28080|0.004|0|0.004|module25|access.log-20181201.gz
+192.168.1.2|30/Nov/2018:03:35:56|GET|/client|HTTP/1.1|200|106|"Java/1.6.0_45"|192.168.2.5:28081|0.088|0|0.088|module19|access.log-20181201.gz
+192.168.1.2|30/Nov/2018:03:35:56|GET|/client|HTTP/1.1|200|161|"Java/1.6.0_45"|192.168.2.3:28080|0.998|0.001|0.998|module13|access.log-20181201.gz
+192.168.1.1|30/Nov/2018:03:35:56|GET|/client|HTTP/1.1|200|59|"Java/1.6.0_45"|192.168.2.4:28081|0.025|0|0.025|module5|access.log-20181201.gz
+192.168.1.5|30/Nov/2018:03:35:56|POST|/client|HTTP/1.1|200|33|"-"|192.168.2.6:9060|0.002|0.001|0.002|module26|access.log-20181201.gz
+192.168.1.1|30/Nov/2018:03:35:56|GET|/client|HTTP/1.1|200|161|"Java/1.6.0_45"|192.168.2.1:28080|0.583|0.001|0.583|module13|access.log-20181201.gz
+192.168.1.2|30/Nov/2018:03:35:58|GET|/client|HTTP/1.1|200|160|"Java/1.6.0_45"|192.168.2.5:28080|0.994|0|0.994|module13|access.log-20181201.gz
+192.168.1.1|30/Nov/2018:03:35:58|GET|/client|HTTP/1.1|200|84|"Java/1.6.0_45"|192.168.2.3:28080|1.096|0|1.096|module20|access.log-20181201.gz
+192.168.1.1|30/Nov/2018:03:35:58|GET|/client|HTTP/1.1|200|161|"Java/1.6.0_45"|192.168.2.3:28080|0.532|0.001|0.532|module13|access.log-20181201.gz
+
 
 ### Dependencies 
 This application depends on 3 jar files:
@@ -21,7 +36,7 @@ $ cd hazelcast-3.10.3/bin/
 ```
 Configure the IMDG xml file. Disable multicast by setting the attribute value of the multicast element to *false* and enable the value of the attribute value tcp-ip element by setting it to *true*
 ```sh
-$ vim hazelcast.xml
+vim hazelcast.xml
 
 <multicast enabled="false">
     <multicast-group>224.2.2.3</multicast-group>
@@ -37,7 +52,7 @@ $ vim hazelcast.xml
 ```
 Set a small Heap size of about 1GB by edting the start.sh
 ```sh
-$ vim start.sh
+vim start.sh
 
 MIN_HEAP_SIZE=1G
 MAX_HEAP_SIZE=1G
@@ -93,4 +108,4 @@ Edit the `HZJetIMDGConnector` by specifying the absolute path to the file `acces
 
 License
 ----
-**Demonstration Purposes of the USE of Hazelcast IMDG and Hazelcast-Jet**
+**Demostration Purposes of the USE of Hazelcast IMDG and Hazelcast-Jet**
