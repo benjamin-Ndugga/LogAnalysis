@@ -5,8 +5,8 @@ computes the total number of requests per module, response code count, average r
 
 Each module has been deployed on clusters 1 and 2, the application records the number of each cluster is taking in the given time window.
 
-## Sample HTTP Request Data
-SOURCE_IP|DATE|REQUEST_TYPE|URL|HTTP_CLIENT_TYPE|RESPOSNE_CODE|CONTENT_LENGHT|CLIENT_TYPE|PROCESSING_NODE|REQUEST_TIME_TAKEN|UPSTREAM_CONN_TIME|UPSTREAM_RESP_TIME|MODULE|FILE_NAME
+## Sample HTTP Data
+SOURCE_IP|DATE|METHOD_TYPE|URL|HTTP_CLIENT_TYPE|RESPOSNE_CODE|CONTENT_LENGHT|CLIENT_TYPE|PROCESSING_NODE|REQUEST_TIME_TAKEN|UPSTREAM_CONN_TIME|UPSTREAM_RESP_TIME|MODULE|FILE_NAME
 ------|------|------|------|------|------|------|------|------|------|------|------|------|------
 192.168.1.1|30/Nov/2018:03:35:54|GET|/client|HTTP/1.1|200|33|"Java/1.6.0_45"|192.168.2.5:28080|0.229|0|0.229|module4|access.log-20181201.gz
 192.168.1.1|30/Nov/2018:03:35:55|GET|/client|HTTP/1.1|200|64|"Java/1.6.0_45"|192.168.2.4:28080|0.004|0|0.004|module25|access.log-20181201.gz
@@ -18,6 +18,7 @@ SOURCE_IP|DATE|REQUEST_TYPE|URL|HTTP_CLIENT_TYPE|RESPOSNE_CODE|CONTENT_LENGHT|CL
 192.168.1.2|30/Nov/2018:03:35:58|GET|/client|HTTP/1.1|200|160|"Java/1.6.0_45"|192.168.2.5:28080|0.994|0|0.994|module13|access.log-20181201.gz
 192.168.1.1|30/Nov/2018:03:35:58|GET|/client|HTTP/1.1|200|84|"Java/1.6.0_45"|192.168.2.3:28080|1.096|0|1.096|module20|access.log-20181201.gz
 192.168.1.1|30/Nov/2018:03:35:58|GET|/client|HTTP/1.1|200|161|"Java/1.6.0_45"|192.168.2.3:28080|0.532|0.001|0.532|module13|access.log-20181201.gz
+
 
 
 ### Dependencies 
@@ -109,3 +110,5 @@ Edit the `HZJetIMDGConnector` by specifying the absolute path to the file `acces
 License
 ----
 **Demostration Purposes of the USE of Hazelcast IMDG and Hazelcast-Jet**
+
+
