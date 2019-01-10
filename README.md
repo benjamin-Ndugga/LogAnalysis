@@ -1,6 +1,6 @@
 # LogAnalysis
 
-[Real-Time HTTP Traffic Analysis ](./src/com/ben/mscit) - A demostration on how streamed data continuously computes trends as it happens. Looking at events in last 5 Minutes and sliding by 10 secs,
+[Real-Time HTTP Traffic Analysis ](./src/com/ben/mscit) - A demonstration on how streamed data continuously computes trends as it happens. Looking at events in last 5 Minutes and sliding by 10 secs,
 computes the total number of requests per module, response code count, average response times , upstream server hit count. This then saves the results to an IMDG. There are lines of code that specify where the results can be wrtiten  with a terminal function `drainTo`. You can change this to see the results by tailing the output file.
 
 Each module has been deployed on clusters 1 and 2, the application records the number of each cluster is taking in the given time window.
@@ -93,4 +93,4 @@ Edit the `HZJetIMDGConnector` by specifying the absolute path to the file `acces
 
 License
 ----
-**Demostration Purposes of the USE of Hazelcast IMDG and Hazelcast-Jet**
+**Demonstration Purposes of the USE of Hazelcast IMDG and Hazelcast-Jet**
