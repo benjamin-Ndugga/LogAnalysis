@@ -1,0 +1,9 @@
+build/*
+dist/*
+nbproject/*
+test/*
+xml-resources/*
+/file.csv
+/manifest.mf
+/test-contxt.txt
+*.xml
