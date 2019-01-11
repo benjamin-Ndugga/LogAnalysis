@@ -7,3 +7,4 @@ xml-resources/*
 /manifest.mf
 /test-contxt.txt
 *.xml
+/sample-requests.csv
