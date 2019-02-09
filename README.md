@@ -32,7 +32,7 @@ These are some of the KPIs the computation engine makes:
 - Upstream server hit count 
 
 ## POM Declaration
-```
+```xml
 <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-web</artifactId>
