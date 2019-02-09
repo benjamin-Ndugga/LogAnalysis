@@ -1,1 +1,6 @@
-
+/nbproject
+/src/test
+/target
+nb-configuration.xml
+*.csv
+*.txt
