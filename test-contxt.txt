@@ -1,0 +1,49 @@
+
+//private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MMM/yyyy:HH:mm:ss");
+//httpRequest.setRequestDateTime(LocalDateTime.from(DATE_FORMAT.parse(split[1])).atZone(ZoneId.systemDefault()).toEpochSecond() * 1000);
+
+
+/**
+         * calculate the total counts per module for events in the last minute
+         */
+        StreamStage<TimestampedEntry<String, Long>> moduleAggregateCount = stage
+                .filter((httpRequest) -> httpRequest.getModule().length() > 1 && httpRequest.getModule().equals("DATAVOLCHECK"))
+                .addTimestamps(HTTPRequest::getRequestDateTime, SECONDS.toMillis(5))
+                .window(tumbling(MINUTES.toMillis(1)))
+                .groupingKey(HTTPRequest::getModule)
+                .aggregate(counting());
+
+        /**
+         * Calculate linear trends per module and write them into an IMap in 2
+         * hour windows sliding by 15 minutes.
+         */
+        moduleAggregateCount
+                .window(sliding(MINUTES.toMillis(120), MINUTES.toMillis(15)))
+                .groupingKey(TimestampedEntry::getKey)
+                .aggregate(linearTrend(TimestampedEntry::getTimestamp, TimestampedEntry::getValue))
+                .map((TimestampedEntry<String, Double> e) -> entry(new StreamedCountTxn(e.getKey(), e.getTimestamp()), e.getValue()))
+                //.drainTo(Sinks.map("requestTrends"));
+                .drainTo(Sinks.files("/home/Benjamin/Desktop/"));
+
+
+//            //Map.Entry<String, String>
+//            stage
+//                    .mapUsingContext(ContextFactories.<StreamedCountTxn, Double>iMapContext("requestTrends"), new DistributedBiFunction<IMapJet<StreamedCountTxn, Double>, HTTPRequest, String>() {
+//                        @Override
+//                        public String applyEx(IMapJet<StreamedCountTxn, Double> moduleRequestTrends, HTTPRequest hTTPRequest) throws Exception {
+//                            int[] counts = new int[NUM_PREDICTIONS];
+//                            double trend = 0.0;
+//                            for (int i = 0; i < NUM_PREDICTIONS; i++) {
+//                                
+//                                Double newTrend = moduleRequestTrends.get(new StreamedCountTxn(hTTPRequest.getModule(), hTTPRequest.getRequestDateTime()));
+//                                
+//                                if (newTrend != null) {
+//                                    trend = newTrend;
+//                                }
+//                                
+//                                double prediction = hTTPRequest.count + i * GRANULARITY_STEP_MS * trend;
+//                                counts[i] = (int) Math.round(prediction);
+//                            }
+//                            return new Prediction(hTTPRequest.location, hTTPRequest.time + GRANULARITY_STEP_MS, counts);
+//                        }
+//                    }).drainTo(Sinks.files("/home/Benjamin/Desktop/"));

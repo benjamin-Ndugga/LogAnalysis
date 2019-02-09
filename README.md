@@ -1,6 +1,6 @@
 # Log Analysis
 
-[Real-Time HTTP Traffic Analysis ](./src/com/ben/mscit) - This is a Java Based application that demonstrates **Big Data Processing** to monitor important key performance indicators (KPI) in a business. In this example we read a big data file and make computations thereafter save the results.
+[Real-Time HTTP Traffic Analysis ](./src/main/java/com/ben/mscit) - This is a Java Based application that demonstrates **Big Data Processing** to monitor important key performance indicators (KPI) in a business. In this example we read a big data file and make computations thereafter save the results.
 
 The file is in csv format that contains HTTP traffic data. We use libraries to support this computation such as; **Hazelcast-Jet** for the computation and **Hazelcast-IMDG** as an in-memory data grid where the results are saved.
 
