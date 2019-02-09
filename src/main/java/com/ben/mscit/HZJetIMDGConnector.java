@@ -38,7 +38,7 @@ public class HZJetIMDGConnector {
 
     //change this line to point to the location where You file is
     private static final String ABSOLUTE_PATH_TO_FILE = "/path/access.log-201812-sample.csv";
-    
+
     private static final String ABSOLUTE_PATH_FOR_RESULTS = "/";
 
     public static void main(String[] args) {
