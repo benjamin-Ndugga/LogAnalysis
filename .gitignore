@@ -1,3 +1,6 @@
 /nbproject
 /src/test
 /target
+/nb-configuration.xml
+/sample-requests.csv
+/test-contxt.txt
