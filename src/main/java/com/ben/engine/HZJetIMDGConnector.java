@@ -1,4 +1,4 @@
-package com.ben.mscit;
+package com.ben.engine;
 
 import com.hazelcast.client.config.ClientConfig;
 import com.hazelcast.client.config.ClientNetworkConfig;
@@ -25,11 +25,14 @@ import com.hazelcast.jet.pipeline.StageWithWindow;
 import static com.hazelcast.jet.pipeline.WindowDefinition.tumbling;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  *
  * @author Benjamin
  */
+@SpringBootApplication
 public class HZJetIMDGConnector {
 
     private static final ThreadLocal<SimpleDateFormat> VALUE_MAP_DATE_FORMAT = ThreadLocal.withInitial(() -> new SimpleDateFormat("\"HH:mm\""));
@@ -37,14 +40,20 @@ public class HZJetIMDGConnector {
     private static final ThreadLocal<SimpleDateFormat> DATE_FORMAT = ThreadLocal.withInitial(() -> new SimpleDateFormat("dd/MMM/yyyy:HH:mm:ss"));
 
     //change this line to point to the location where You file is
-    private static final String ABSOLUTE_PATH_TO_FILE = "/path/access.log-201812-sample.csv";
+    private static final String ABSOLUTE_PATH_TO_FILE = "/home/Benjamin/Desktop/access-logs/";
 
-    private static final String ABSOLUTE_PATH_FOR_RESULTS = "/";
+    //private static final String ABSOLUTE_PATH_FOR_RESULTS = "/";
 
     public static void main(String[] args) {
+        
+        //start the spring-boot application
+        SpringApplication.run(HZJetIMDGConnector.class, args);
+        
         try {
+            //build the pipeline
             Pipeline p = buildPipeline();
 
+            //instantiate the jet configs
             JetInstance jet = Jet.newJetClient(createJetConfig());
             JobConfig jobConfig = new JobConfig();
 
@@ -54,12 +63,11 @@ public class HZJetIMDGConnector {
 
             jobConfig.setName("http-log-stream-txns");
 
-            //print the DAG
-            System.out.println(p.toDotString());
 
             //Perform the computation
             jet.newJob(p, jobConfig).join();
 
+           
         } finally {
             //shut down when Job is done
             Jet.shutdownAll();
@@ -75,8 +83,8 @@ public class HZJetIMDGConnector {
 
         //read from flat file
         BatchStage<HTTPRequest> stage = p.drawFrom(
-                filesBuilder(sourceFile.getParent().toString())
-                        .glob("*sample*")
+                filesBuilder(sourceFile.toString())
+                        .glob("access.log-201812-sample.csv")
                         .build((file, line) -> {
 
                             String[] split = line.split(",");
@@ -120,8 +128,8 @@ public class HZJetIMDGConnector {
                 .groupingKey(HTTPRequest::getModule)
                 .aggregate(counting())
                 .map((TimestampedEntry<String, Long> t) -> entry(t.getKey(), "{\"time\":" + VALUE_MAP_DATE_FORMAT.get().format(new Date(t.getTimestamp())) + ",\"value\":" + t.getValue() + "}"))
-                //.drainTo(Sinks.remoteMap("mdstcnt", createHzConfig()));
-                .drainTo(Sinks.files(ABSOLUTE_PATH_FOR_RESULTS));
+                .drainTo(Sinks.remoteMap("mdstcnt", createHzConfig()));
+                //.drainTo(Sinks.files(ABSOLUTE_PATH_FOR_RESULTS));
 
         /**
          * Counting the number of response codes grouped by the response code.
@@ -168,6 +176,8 @@ public class HZJetIMDGConnector {
         ClientConfig jetClientConfig = new ClientConfig();
 
         jetClientConfig.setGroupConfig(new GroupConfig("jet", "jet-pass"));
+        
+        jetClientConfig.setProperty("hazelcast.logging.type", "jdk");
 
         ClientNetworkConfig networkConfig = jetClientConfig.getNetworkConfig();
         networkConfig.addAddress("localhost:6701");

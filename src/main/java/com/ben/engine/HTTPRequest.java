@@ -1,4 +1,4 @@
-package com.ben.mscit;
+package com.ben.engine;
 
 import java.io.Serializable;
 
