@@ -1,10 +1,9 @@
-build/*
-dist/*
-nbproject/*
 test/*
 xml-resources/*
 /file.csv
 /manifest.mf
 /test-contxt.txt
-*.xml
 /sample-requests.csv
+ target/
+/nb-configuration.xml
+/src/test/
